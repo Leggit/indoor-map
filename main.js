@@ -12,6 +12,9 @@ import { Circle } from "ol/geom";
 import { Fill, Stroke, Style } from "ol/style";
 import { desks } from "./data";
 
+import Overlay from "ol/Overlay.js";
+import Select from "ol/interaction/Select.js";
+
 async function setupMap() {
   const { imageLayer, extent, projection } = await createFloorImageLayer();
 
@@ -29,6 +32,8 @@ async function setupMap() {
 
   const deskLayer = createDeskLayer(map);
   map.addLayer(deskLayer);
+
+  setupDeskSelection(map, deskLayer);
 }
 
 async function createFloorImageLayer() {
@@ -98,6 +103,43 @@ function createDeskLayer(map) {
   });
 
   return vectorLayer;
+}
+
+function setupDeskSelection(map, layer) {
+  const popup = new Overlay({
+    element: document.getElementById("popup"),
+  });
+  map.addOverlay(popup);
+
+  const select = new Select({
+    layers: [layer],
+  });
+
+  select.on("select", (evt) => {
+    const element = popup.getElement();
+    let popover = bootstrap.Popover.getInstance(element);
+    if (popover) {
+      popover.dispose();
+    }
+
+    if (evt.selected[0] && evt.selected[0].get("status") === "Available") {
+      popup.setPosition(evt.selected[0].getGeometry().getCenter());
+      popover = new bootstrap.Popover(element, {
+        sanitize: false,
+        animation: false,
+        container: element,
+        content: "<button class='btn btn-primary'>Reserve now</button>",
+        html: true,
+        placement: "top",
+        title: `Desk #${evt.selected[0].get("deskId")} is available`,
+      });
+      popover.show();
+    } else {
+      select.getFeatures().clear();
+    }
+  });
+
+  map.addInteraction(select);
 }
 
 setupMap();
