@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Indoor Map</title>
+    <link rel="stylesheet" href="node_modules/ol/ol.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background-color: rgb(231, 231, 231);
+      }
+      .container {
+        margin: auto;
+        width: 600px;
+      }
+      .map {
+        width: 100%;
+        height: 600px;
+        border: 1px solid black;
+        background-color: beige;
+      }
+      h1 {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: large;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Select which desk you would like to work at:</h1>
+      <div id="map" class="map"></div>
+    </div>
+
+    <div style="display: none;"></div>
+      <div id="popup"></div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
